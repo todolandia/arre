@@ -9,121 +9,95 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: black;
-  color: white;
-  overflow-x: hidden;
+  background: #ff0066;
 }
 
-/* fondo animado */
+/* fondo retro */
 body::before {
   content: "";
   position: fixed;
-  width: 300%;
-  height: 300%;
-  background: radial-gradient(circle, #ff0066, black, gold);
-  animation: moveBg 20s infinite linear;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);
+  opacity: 0.1;
   z-index: -1;
-  opacity: 0.4;
-}
-
-@keyframes moveBg {
-  0% { transform: translate(0,0); }
-  50% { transform: translate(-20%, -20%); }
-  100% { transform: translate(0,0); }
 }
 
 h1 {
+  font-size: 60px;
+  color: yellow;
+  text-shadow: 5px 5px black;
   text-align: center;
-  font-size: 70px;
-  color: gold;
-  text-shadow: 0 0 20px #ff0066;
-  animation: glitch 0.3s infinite;
-  margin-bottom: 30px;
-}
-
-@keyframes glitch {
-  0% { transform: translate(2px, -2px); }
-  50% { transform: translate(-2px, 2px); }
-  100% { transform: translate(2px, 2px); }
+  margin-top:40px;
 }
 
 .header-img {
   display:block;
   margin:40px auto;
   width:250px;
-  transform:rotate(-8deg);
-  border:5px solid gold;
-  box-shadow:10px 10px 20px black;
+  transform:rotate(-5deg);
+  border:4px solid black;
+  box-shadow:8px 8px 0 black;
 }
 
 .banner {
   text-align:center;
-  background:gold;
-  color:black;
+  background:yellow;
   padding:15px;
   font-weight:bold;
   margin:40px;
 }
 
-/* GRID MEJORADO */
+/* CONTENEDOR VERTICAL */
 .container {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  grid-auto-rows: 220px;
-  gap:60px; /* 🔥 MÁS ESPACIO */
-  padding:60px;
+  max-width:700px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  gap:50px; /* 🔥 más espacio */
+  padding:20px;
 }
-
-/* tamaños random */
-.card:nth-child(3n) { grid-row: span 2; }
-.card:nth-child(5n) { grid-column: span 2; }
 
 .card {
   background:white;
-  color:black;
-  border:4px solid gold;
+  border:4px solid black;
   padding:20px;
-  transform: rotate(-3deg);
+  box-shadow:10px 10px 0 black;
+  transform:rotate(-2deg);
   transition:0.3s;
-  animation: fadeIn 1s ease;
 }
 
-.card:hover {
-  transform: scale(1.1) rotate(3deg);
-  filter: contrast(150%) saturate(150%);
+.card:nth-child(even){
+  transform:rotate(2deg);
 }
 
-@keyframes fadeIn {
-  from {opacity:0; transform: translateY(50px);}
-  to {opacity:1;}
-}
-
-.slider img {
-  width:100%;
-  height:150px;
-  object-fit:cover;
-  border:2px solid black;
+.card:hover{
+  transform:scale(1.05);
 }
 
 .btn {
   background:black;
   color:white;
-  border:none;
   padding:8px;
+  border:none;
   cursor:pointer;
 }
 
-/* 🎧 PLAYER */
-.player {
-  background:black;
-  color:#00ff00;
-  padding:10px;
-  border:3px solid #00ff00;
-  font-family: monospace;
+.slider .slide { display:none; }
+.slider .active { display:block; }
+.slider img {
+  width:100%;
+  border:3px solid black;
+}
+
+.nav {
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
 }
 
 .comment-box {
-  background:gold;
+  background:yellow;
   margin-top:10px;
   padding:8px;
 }
@@ -150,26 +124,24 @@ No sé lo que hago pero funciona
 <div class="slider">
 <div class="slide active"><img src="https://github.com/todolandia/arre/blob/main/chiquito.jpg?raw=true"></div>
 <div class="slide"><img src="https://github.com/todolandia/arre/blob/main/chiquito.jpg?raw=true"></div>
+<div class="nav">
 <button onclick="prev(this)">←</button>
 <button onclick="next(this)">→</button>
 </div>
 </div>
+</div>
 
-<!-- 🎧 PLAYER REAL -->
+<!-- 🎧 MÚSICA FUNCIONANDO -->
 <div class="card">
-<h2>🎧 Música</h2>
-
-<div class="player">
-<p>winamp vibes...</p>
+<h2>Música</h2>
 
 <audio id="audio">
 <source src="https://raw.githubusercontent.com/todolandia/arre/main/song1.mp3">
 </audio>
 
-<button onclick="audio.play()" class="btn">▶️ Play</button>
-<button onclick="audio.pause()" class="btn">⏸ Pause</button>
+<button class="btn" onclick="audio.play()">▶️ Play</button>
+<button class="btn" onclick="audio.pause()">⏸ Pause</button>
 
-</div>
 </div>
 
 <div class="card">
@@ -177,8 +149,10 @@ No sé lo que hago pero funciona
 <div class="slider">
 <div class="slide active"><img src="https://github.com/todolandia/arre/blob/main/punk.jpg?raw=true"></div>
 <div class="slide"><img src="https://github.com/todolandia/arre/blob/main/punk.jpg?raw=true"></div>
+<div class="nav">
 <button onclick="prev(this)">←</button>
 <button onclick="next(this)">→</button>
+</div>
 </div>
 </div>
 
@@ -187,8 +161,10 @@ No sé lo que hago pero funciona
 <div class="slider">
 <div class="slide active"><img src="https://github.com/todolandia/arre/blob/main/teporocho.jpg?raw=true"></div>
 <div class="slide"><img src="https://github.com/todolandia/arre/blob/main/teporocho.jpg?raw=true"></div>
+<div class="nav">
 <button onclick="prev(this)">←</button>
 <button onclick="next(this)">→</button>
+</div>
 </div>
 </div>
 
@@ -203,16 +179,18 @@ No sé lo que hago pero funciona
 <div class="slider">
 <div class="slide active"><img src="https://github.com/todolandia/arre/blob/main/malabarista.jpg?raw=true"></div>
 <div class="slide"><img src="https://github.com/todolandia/arre/blob/main/malabarista.jpg?raw=true"></div>
+<div class="nav">
 <button onclick="prev(this)">←</button>
 <button onclick="next(this)">→</button>
+</div>
 </div>
 </div>
 
 <div class="card">
 <h2>Comentarios</h2>
-<input id="name" placeholder="Nombre">
-<textarea id="comment" placeholder="Mensaje"></textarea>
-<button onclick="addComment()">Enviar</button>
+<input id="name" placeholder="Nombre" style="width:100%">
+<textarea id="comment" placeholder="Mensaje" style="width:100%"></textarea>
+<button class="btn" onclick="addComment()">Enviar</button>
 <div id="commentsList"></div>
 </div>
 
@@ -220,10 +198,13 @@ No sé lo que hago pero funciona
 
 <script>
 let score=0;
-function sumar(){score++;document.getElementById("score").innerText=score;}
+function sumar(){
+  score++;
+  document.getElementById("score").innerText=score;
+}
 
 function next(btn){
- let s=btn.parentElement;
+ let s=btn.closest(".slider");
  let slides=s.querySelectorAll(".slide");
  let i=[...slides].findIndex(e=>e.classList.contains("active"));
  slides[i].classList.remove("active");
@@ -231,7 +212,7 @@ function next(btn){
 }
 
 function prev(btn){
- let s=btn.parentElement;
+ let s=btn.closest(".slider");
  let slides=s.querySelectorAll(".slide");
  let i=[...slides].findIndex(e=>e.classList.contains("active"));
  slides[i].classList.remove("active");
