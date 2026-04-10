@@ -9,91 +9,118 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: #ff0066;
+  background: black;
+  color: white;
+  overflow-x: hidden;
 }
 
+/* fondo animado */
 body::before {
   content: "";
   position: fixed;
-  width: 200%;
-  height: 200%;
-  background: repeating-linear-gradient(45deg, yellow, yellow 10px, black 10px, black 20px);
-  opacity: 0.1;
+  width: 300%;
+  height: 300%;
+  background: radial-gradient(circle, #ff0066, black, gold);
+  animation: moveBg 20s infinite linear;
   z-index: -1;
+  opacity: 0.4;
+}
+
+@keyframes moveBg {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(-20%, -20%); }
+  100% { transform: translate(0,0); }
 }
 
 h1 {
-  font-size: 60px;
-  color: yellow;
-  text-shadow: 5px 5px black;
   text-align: center;
+  font-size: 70px;
+  color: gold;
+  text-shadow: 0 0 20px #ff0066;
+  animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(2px, -2px); }
+  50% { transform: translate(-2px, 2px); }
+  100% { transform: translate(2px, 2px); }
 }
 
 .header-img {
   display:block;
   margin:auto;
   width:250px;
-  transform:rotate(-5deg);
-  border:4px solid black;
-  box-shadow:8px 8px 0 black;
+  transform:rotate(-8deg);
+  border:5px solid gold;
+  box-shadow:10px 10px 20px black;
 }
 
 .banner {
   text-align:center;
-  background:yellow;
+  background:gold;
+  color:black;
   padding:10px;
   font-weight:bold;
   margin:20px;
 }
 
+/* GRID LOCO */
 .container {
-  max-width:700px;
-  margin:auto;
-  display:flex;
-  flex-direction:column;
-  gap:40px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: 200px;
+  gap:20px;
+  padding:20px;
 }
+
+/* tamaños random */
+.card:nth-child(3n) { grid-row: span 2; }
+.card:nth-child(5n) { grid-column: span 2; }
 
 .card {
   background:white;
-  border:4px solid black;
-  padding:15px;
-  box-shadow:10px 10px 0 black;
-  transform:rotate(-2deg);
+  color:black;
+  border:4px solid gold;
+  padding:10px;
+  transform: rotate(-3deg);
+  transition:0.3s;
+  animation: fadeIn 1s ease;
 }
 
-.card:nth-child(even){
-  transform:rotate(2deg);
+.card:hover {
+  transform: scale(1.1) rotate(3deg);
+  filter: contrast(150%) saturate(150%);
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(50px);}
+  to {opacity:1;}
+}
+
+.slider img {
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border:2px solid black;
+}
+
+.nav {
+  display:flex;
+  justify-content:space-between;
 }
 
 .btn {
   background:black;
   color:white;
-  padding:10px;
   border:none;
+  padding:5px;
   cursor:pointer;
 }
 
-.irony {
-  background:yellow;
-  padding:5px;
-}
-
-.slider .slide { display:none; }
-.slider .active { display:block; }
-.slider img { width:100%; border:3px solid black; }
-
-.nav {
-  display:flex;
-  justify-content:space-between;
-  margin-top:10px;
-}
-
 .comment-box {
-  margin-top:10px;
-  padding:8px;
-  background:yellow;
-  border:2px solid black;
+  background:gold;
+  margin-top:5px;
+  padding:5px;
 }
 </style>
 </head>
@@ -110,7 +137,7 @@ h1 {
 
 <div class="card">
 <h2>Perfil</h2>
-<span class="irony">No sé lo que hago pero funciona</span>
+No sé lo que hago pero funciona
 </div>
 
 <div class="card">
@@ -118,10 +145,8 @@ h1 {
 <div class="slider" data-index="0">
 <div class="slide active"><img src="https://github.com/todolandia/arre/blob/main/chiquito.jpg?raw=true"></div>
 <div class="slide"><img src="https://github.com/todolandia/arre/blob/main/chiquito.jpg?raw=true"></div>
-<div class="nav">
 <button onclick="prev(this)">←</button>
 <button onclick="next(this)">→</button>
-</div>
 </div>
 </div>
 
@@ -131,59 +156,46 @@ h1 {
 </div>
 
 <div class="card">
-<h2>Dany Punk juvenil</h2>
+<h2>Dany Punk</h2>
 <div class="slider" data-index="0">
 <div class="slide active"><img src="https://github.com/todolandia/arre/blob/main/punk.jpg?raw=true"></div>
 <div class="slide"><img src="https://github.com/todolandia/arre/blob/main/punk.jpg?raw=true"></div>
-<div class="nav">
 <button onclick="prev(this)">←</button>
 <button onclick="next(this)">→</button>
 </div>
 </div>
-</div>
 
 <div class="card">
-<h2>Proyectos</h2>
-<span class="irony">Funciona en mi máquina</span>
-</div>
-
-<div class="card">
-<h2>Dany teporocho bebedor de caguamas</h2>
+<h2>Dany teporocho</h2>
 <div class="slider" data-index="0">
 <div class="slide active"><img src="https://github.com/todolandia/arre/blob/main/teporocho.jpg?raw=true"></div>
 <div class="slide"><img src="https://github.com/todolandia/arre/blob/main/teporocho.jpg?raw=true"></div>
-<div class="nav">
 <button onclick="prev(this)">←</button>
 <button onclick="next(this)">→</button>
-</div>
 </div>
 </div>
 
 <div class="card">
 <h2>Juego</h2>
 <button class="btn" onclick="sumar()">Click</button>
-<p>Clicks: <span id="score">0</span></p>
+<p><span id="score">0</span></p>
 </div>
 
 <div class="card">
 <h2>Dany malabarista</h2>
 <div class="slider" data-index="0">
 <div class="slide active"><img src="https://github.com/todolandia/arre/blob/main/malabarista.jpg?raw=true"></div>
-<div class="slide"><img src="https://github.com/todolandia/arre/blob/main/malabarista.jpg?raw=true></div>
-<div class="nav">
+<div class="slide"><img src="https://github.com/todolandia/arre/blob/main/malabarista.jpg?raw=true"></div>
 <button onclick="prev(this)">←</button>
 <button onclick="next(this)">→</button>
 </div>
 </div>
-</div>
 
-<!-- COMENTARIOS -->
 <div class="card">
 <h2>Comentarios</h2>
-<input id="name" placeholder="Nombre" style="width:100%;margin-bottom:5px;">
-<textarea id="comment" placeholder="Mensaje" style="width:100%;height:60px;"></textarea>
-<button class="btn" onclick="addComment()">Enviar</button>
-
+<input id="name" placeholder="Nombre">
+<textarea id="comment" placeholder="Mensaje"></textarea>
+<button onclick="addComment()">Enviar</button>
 <div id="commentsList"></div>
 </div>
 
@@ -191,37 +203,29 @@ h1 {
 
 <script>
 let score=0;
-function sumar(){
-  score++;
-  document.getElementById("score").innerText=score;
-}
+function sumar(){score++;document.getElementById("score").innerText=score;}
 
 function next(btn){
-  let s=btn.closest(".slider");
-  let i=parseInt(s.dataset.index);
-  let slides=s.querySelectorAll(".slide");
-  slides[i].classList.remove("active");
-  i=(i+1)%slides.length;
-  slides[i].classList.add("active");
-  s.dataset.index=i;
+ let s=btn.parentElement;
+ let slides=s.querySelectorAll(".slide");
+ let i=[...slides].findIndex(e=>e.classList.contains("active"));
+ slides[i].classList.remove("active");
+ slides[(i+1)%slides.length].classList.add("active");
 }
 
 function prev(btn){
-  let s=btn.closest(".slider");
-  let i=parseInt(s.dataset.index);
-  let slides=s.querySelectorAll(".slide");
-  slides[i].classList.remove("active");
-  i=(i-1+slides.length)%slides.length;
-  slides[i].classList.add("active");
-  s.dataset.index=i;
+ let s=btn.parentElement;
+ let slides=s.querySelectorAll(".slide");
+ let i=[...slides].findIndex(e=>e.classList.contains("active"));
+ slides[i].classList.remove("active");
+ slides[(i-1+slides.length)%slides.length].classList.add("active");
 }
 
 function playMusic(){
-  new Audio('song1.mp3').play();
+ new Audio('song1.mp3').play();
 }
 </script>
 
-<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -229,39 +233,30 @@ import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstati
 const firebaseConfig = {
   apiKey: "AIzaSyBa4g0hbd1FckmtVsyStwSn-eiAdrmAOd0",
   authDomain: "daniel-web-9d96f.firebaseapp.com",
-  projectId: "daniel-web-9d96f",
-  storageBucket: "daniel-web-9d96f.firebasestorage.app",
-  messagingSenderId: "97835808356",
-  appId: "1:97835808356:web:78bd82b50bf4cdd8f59171"
+  projectId: "daniel-web-9d96f"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 window.addComment = async function(){
-  let name=document.getElementById("name").value;
-  let text=document.getElementById("comment").value;
-  if(!name||!text)return;
+ let name=document.getElementById("name").value;
+ let text=document.getElementById("comment").value;
+ if(!name||!text)return;
 
-  await addDoc(collection(db,"comentarios"),{
-    name:name,
-    text:text
-  });
-
-  document.getElementById("name").value="";
-  document.getElementById("comment").value="";
+ await addDoc(collection(db,"comentarios"),{name,text});
 };
 
 onSnapshot(collection(db,"comentarios"),(snap)=>{
-  let c=document.getElementById("commentsList");
-  c.innerHTML="";
-  snap.forEach(doc=>{
-    let d=doc.data();
-    let div=document.createElement("div");
-    div.className="comment-box";
-    div.innerHTML=`<b>${d.name}</b>: ${d.text}`;
-    c.appendChild(div);
-  });
+ let c=document.getElementById("commentsList");
+ c.innerHTML="";
+ snap.forEach(doc=>{
+  let d=doc.data();
+  let div=document.createElement("div");
+  div.className="comment-box";
+  div.innerHTML=`<b>${d.name}</b>: ${d.text}`;
+  c.appendChild(div);
+ });
 });
 </script>
 
