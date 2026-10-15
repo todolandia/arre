@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minijuego: El Escudo de la Familia</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --background: #f3f4f6;
+            --card-bg: #ffffff;
+            --text: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        p.subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        /* Personajes interactivos visuales */
+        .characters-stage {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 25px;
+            background: #eef2ff;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .character-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .avatar {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            background: white;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* Zona de juego y escenarios */
+        .scenario-box {
+            background: #fafafa;
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scenario-text {
+            font-size: 1.15rem;
+            font-weight: 500;
+        }
+
+        /* Botones de acción */
+        .choices-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        button.choice-btn {
+            background-color: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button.choice-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Feedback visual */
+        #feedback-box {
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .correct {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid var(--success);
+        }
+
+        .incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid var(--danger);
+        }
+
+        .next-btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .next-btn:hover {
+            background-color: #059669;
+        }
+
+        .score-board {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>🛡️ El Escudo de la Familia</h1>
+        <p class="subtitle">Aprende a tomar decisiones seguras con Papá, Mamá y los extraños</p>
+
+        <!-- Representación visual de los actores -->
+        <div class="characters-stage">
+            <div class="character-card">
+                <div class="avatar">👨‍👩‍👧</div>
+                <span>Papá y Mamá</span>
+            </div>
+            <div class="character-card">
+                <div class="avatar">🧒</div>
+                <span>Tú (Niño/a)</span>
+            </div>
+            <div class="character-card">
+                <div class="avatar">👤</div>
+                <span>Extraño</span>
+            </div>
+        </div>
+
+        <!-- Pregunta / Situación del minijuego -->
+        <div class="scenario-box">
+            <div id="scenario-text" class="scenario-text">Cargando escenario...</div>
+        </div>
+
+        <!-- Botones de respuesta -->
+        <div id="choices-container" class="choices-container">
+            <!-- Los botones se generan dinámicamente con JS -->
+        </div>
+
+        <!-- Mensaje de retroalimentación -->
+        <div id="feedback-box"></div>
+        <button id="next-btn" class="next-btn" onclick="siguienteEscenario()">Siguiente Situación ➡️</button>
+
+        <div class="score-board">
+            Progreso: <span id="current-question">1</span> de <span id="total-questions">3</span>
+        </div>
+    </div>
+
+    <script>
+        // Datos de los escenarios del minijuego
+        const escenarios = [
+            {
+                pregunta: "👤 Un extraño se acerca al parque y te dice: '¡Hola! Se me perdió mi perrito, ¿me ayudas a buscarlo? Tengo dulces en mi carro'.",
+                opciones: [
+                    { texto: "Aceptar e ir a ver el perrito y los dulces", correcta: false, mensaje: "❌ ¡Cuidado! Nunca debes acercarte ni aceptar cosas de extraños." },
+                    { texto: "Decir ¡NO!, alejarte corriendo y avisar a Papá o Mamá", correcta: true, mensaje: "✅ ¡Excelente! Tomaste la decisión correcta de protegerte y avisar." }
+                ]
+            },
+            {
+                pregunta: "👤 Al salir de clases, una persona que no conoces se te acerca y dice: 'Tus papás me mandaron por ti porque ellos no pudieron venir'.",
+                opciones: [
+                    { texto: "Irme con esa persona porque conoce mi nombre", correcta: false, mensaje: "❌ ¡Peligro! Solo debes irte con personas autorizadas por tu familia." },
+                    { texto: "Gritar ¡No te conozco!, alejarte y buscar a tus maestros o papás", correcta: true, mensaje: "✅ ¡Muy bien! Activaste tu escudo protector y buscaste apoyo seguro." }
+                ]
+            },
+            {
+                pregunta: "👤 Un desconocido te ofrece un juguete nuevo muy divertido en la calle si lo acompañas a la esquina.",
+                opciones: [
+                    { texto: "Ir con él rápido para jugar con el juguete", correcta: false, mensaje: "❌ ¡Incorrecto! Los extraños pueden usar trampas para engañarte." },
+                    { texto: "Alejarme inmediatamente y contarle a Papá o Mamá", correcta: true, mensaje: "✅ ¡Perfecto! Tu seguridad es lo más importante. Siempre avisa a casa." }
+                ]
+            }
+        ];
+
+        let indiceActual = 0;
+
+        const scenarioText = document.getElementById("scenario-text");
+        const choicesContainer = document.getElementById("choices-container");
+        const feedbackBox = document.getElementById("feedback-box");
+        const nextBtn = document.getElementById("next-btn");
+        const currentQuestionSpan = document.getElementById("current-question");
+        const totalQuestionsSpan = document.getElementById("total-questions");
+
+        totalQuestionsSpan.textContent = escenarios.length;
+
+        function cargarEscenario() {
+            feedbackBox.style.display = "none";
+            nextBtn.style.display = "none";
+            choicesContainer.innerHTML = "";
+
+            const escenarioActual = escenarios[indiceActual];
+            scenarioText.textContent = escenarioActual.pregunta;
+            currentQuestionSpan.textContent = indiceActual + 1;
+
+            escenarioActual.opciones.forEach((opcion) => {
+                const btn = document.createElement("button");
+                btn.className = "choice-btn";
+                btn.textContent = opcion.texto;
+                btn.onclick = () => verificarRespuesta(opcion.correcta, opcion.mensaje);
+                choicesContainer.appendChild(btn);
+            });
+        }
+
+        function verificarRespuesta(esCorrecta, mensaje) {
+            // Ocultar botones de opciones
+            choicesContainer.innerHTML = "";
+
+            // Mostrar retroalimentación
+            feedbackBox.textContent = mensaje;
+            feedbackBox.className = esCorrecta ? "correct" : "incorrect";
+            feedbackBox.style.display = "block";
+
+            // Mostrar botón siguiente o reiniciar si terminó
+            if (indiceActual < escenarios.length - 1) {
+                nextBtn.style.display = "inline-block";
+            } else {
+                nextBtn.textContent = "🔄 Volver a Jugar";
+                nextBtn.style.display = "inline-block";
+                nextBtn.onclick = () => {
+                    indiceActual = 0;
+                    nextBtn.textContent = "Siguiente Situación ➡️";
+                    nextBtn.onclick = siguienteEscenario;
+                    cargarEscenario();
+                };
+            }
+        }
+
+        function siguienteEscenario() {
+            indiceActual++;
+            cargarEscenario();
+        }
+
+        // Iniciar el juego al cargar la página
+        cargarEscenario();
+    </script>
+</body>
+</html>
